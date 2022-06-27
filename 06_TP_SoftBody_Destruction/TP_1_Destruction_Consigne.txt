@@ -1,0 +1,110 @@
+// Objectif:
+- Implementer du code de physique
+- Utilisation de la logique
+- Utilisation des formules de base pour les collisions
+- Creativité pour résoudre des problèmes - simple -
+
+// Context:
+Vous travaillez dans un code avec une implementation de SoftBody.
+Vous devez ajouter la fonctionnalite de 'destruction'.
+
+// Context réalisation:
+Travail Individuel
+40% de la note finale
+
+// Outil:
+C++
+Visual Studio
+
+// Livrable: Seulement le fichier NOM_Prenom_TP_1_Destruction.cpp
+Date: 
+Non-remis équivaut à 0%
+Tout retard peut engendrer une dévaluation de note de 5% par jour
+A rendre sur Léa
+- Vous renderez seulement le fichier NOM_Prenom_TP_1_Destruction.cpp
+- Mettre votre nom et prénom en haut du fichier ligne 2. et 3.
+- Mettre la solution '06_TP_SoftBody_Destruction' comme project par defaut 'Click droit'>'Set Project as Startup'
+
+// Critères:
+- Fonctionnalité (Le code compile et répond complétement aux attentes, etc.)
+	- /!\ Un code qui ne compile pas, ne peut pas avoir une note > 50%!
+	- C'est a vous de vérifier pour me rendre un fichier fonctionnel.
+- Qualité (Lisibilité, style du code: code sans warning, indentation, commentaire, ...)
+- Performance (Minimiser l'usage des sqrt, ...)
+Ces critères sont appliqués à chaque questions.
+
+// Explication:
+- Un ressort à une longueur au repos ('fRestLength' dans le code) qui est la longueur d'un ressort au repos sans contraintes.
+- Un ressort qui a été détruit est un ressort dont le 'bIsAlive' est mis a 'false';
+
+// Exemples:
+- Vous disposez de simulation pre-configuré:
+	Default
+		Test Simple de Deformation et Destruction
+	BrokenBar:
+		Test SpringType::Stretch
+	CompressBar:
+		Test SpringType::Compressible
+	CompressStretchBar:
+		Test SpringType::Both
+	SpinningBar
+		Test Force Centrifuge
+	Tearing
+		Test d'effort pour le dechirement
+	SpriningCube:
+		Test Force Centrifuge
+	BouncyJelly
+		Test Bonus: Rection de collision Bi-Directionnel
+			Collider => Particle
+			Particle => Collider
+
+En bas dans paramètre choisissez l'example > 'Set' puis Play.
+Je vous laisse explorer les paramètres.
+Regarder le lien entre les paramètres et le code, voir si la variable est utilisé ou non.
+
+// 10%
+1. Modifier la force du ressort 'fSpringStrength' en fonction de la longueur a la création.
+	// Si un ressort est long alors réduire la force du ressort proportionnellement à la taille.
+
+// 60%
+2. Trouver un moyen d'implementer la destruction du Soft-Body.
+	Indice voir la zone du commentaire: '// Update elongation'
+	Scalar const fElongation = oSpring.GetCurrentElongation();
+	- fSpringPlastic <= Decrit le pourcentage d'elongation (par rapport a la taille a la creation) avant zone plastique
+	- fSpringFracture <= Decrit le pourcentage d'elongation (par rapport a la taille a la creation) la fracture
+	Si 'Stretch' l'elongation est en un etirement
+	Si 'Compressible' l'elongation est en une compression
+	Si 'Both' l'elongation est en etirement et compression
+30%
+2.1. Implementer le SpringType::Stretch:
+	Cas de test {Default, BrokenBar, SpinningBar, SpriningCube}
+30%
+2.2. Implementer le SpringType::Compressible:
+	Cas de test {CompressBar, Tearing}
+10%
+2.2. Implementer le SpringType::Both:
+	Cas de test {CompressStretchBar}
+
+// 20%
+3. Implementer la fonction GetCritical:
+Scalar GetCritical(Spring const& oSpring, SpringType const eSpringType, Bool const bPlasticity)
+/// Fonction retournant un nombre entre 0.0f et 1.0f, montrant l'etat du ressort
+///
+/// /!\ Important
+///		Prendre en compte le mode si l'on est SpringType::Compressible, SpringType::Stretch ou SpringType::Both
+///
+///		Si 'bPlasticity' => Return 0.0f si le 'oSpring' est toujours elastique
+///							return ]0.0f, 1.0f[ en fonction de sa longueur au repos par rapport a sa longueur de fracture
+///							et 1.0f si 'oSrping' est fracture
+///
+///		Si '!bPlasticity' => Return 0.0f si 'oSpring' est de la longueur a sa creation
+///							return ]0.0f, 1.0f[ en fonction de son elongation courante par rapport a sa longueur de fracture
+///							et 1.0f si 'oSrping' est fracture
+
+// Bonus: Jusqu'a 10% supplementaire peuvent etre obtenu via cette question
+//			Mais la note final ne depassera jamais 100%.
+3. Implementer les collisions lorsque 'oCurrent.bColliderPlay' est actif.
+	Cas Test {BouncyJelly}
+
+Les ressorts doivent exercer une force sur la balle de collision.
+La balle de collision doit exercer une force sur les particules.
